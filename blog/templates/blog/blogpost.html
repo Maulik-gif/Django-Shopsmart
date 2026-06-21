@@ -1,0 +1,162 @@
+{% extends 'blog/master.html' %}
+
+{% block css %}
+/* --- Upgraded Blog Post CSS --- */
+.blog-post {
+    color: #495057; /* Softer text color reduces eye strain for reading */
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.blog-post-title {
+    font-weight: 800;
+    color: #212529;
+    margin-bottom: 1.5rem;
+}
+
+.blog-post h2, .blog-post h3 {
+    font-weight: 700;
+    color: #212529;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #0dcaf0, #198754);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Sidebar Link Styling */
+.social-links a {
+    text-decoration: none;
+    color: #198754;
+    font-weight: 600;
+    transition: color 0.3s ease, padding-left 0.3s ease;
+    display: inline-block;
+    padding: 5px 0;
+}
+
+.social-links a:hover {
+    color: #0dcaf0;
+    padding-left: 10px; /* Slight slide effect on hover */
+}
+
+/* Custom Pagination Buttons */
+.page-link {
+    border: none;
+    background-color: #f8f9fa;
+    color: #198754;
+    transition: all 0.3s ease;
+}
+
+.page-link:hover:not([disabled]) {
+    background-color: #198754;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(25, 135, 84, 0.2);
+}
+
+.page-link[disabled] {
+    background-color: #e9ecef;
+    color: #adb5bd;
+    cursor: not-allowed;
+}
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5 mb-5">
+    <div class="row g-5">
+        <div class="col-md-8">
+            <h3 class="pb-3 mb-4 fst-italic border-bottom fw-bold text-muted">
+               <span class="text-gradient"> Shop Smart Blog</span>
+            </h3>
+
+            <article class="blog-post">
+                <h1 class="blog-post-title display-5">{{ blog.title }}</h1>
+                
+                <p class="text-muted small mb-5 border-bottom pb-3">
+                    Posted in <strong class="text-success">{{ blog.title }}</strong> by Admin on {{ blog.pub_date }}
+                </p>
+
+                <h2 class="h3">{{ blog.heading_1 }}</h2>
+                <p>{{ blog.heading_1_content }}</p>
+                
+                <h2 class="h3">{{ blog.heading_2 }}</h2>
+                <p>{{ blog.heading_2_content }}</p>
+                
+                <h3 class="h4 text-info">{{ blog.sub_heading }}</h3>
+                <p>{{ blog.sub_heading_content }}</p>
+            </article>
+
+            <nav aria-label="Blog post navigation" class="mt-5 pt-4 border-top">
+                <div class="d-flex justify-content-between">
+                    <button id="pr{{blog.blog_id}}" class="previous page-link rounded-pill px-4 py-2 fw-bold shadow-sm" {% if blog.blog_id == min_id %}disabled{% endif %}>
+                        &larr; Previous Post
+                    </button>
+                    <button id="ne{{blog.blog_id}}" class="next page-link rounded-pill px-4 py-2 fw-bold shadow-sm" {% if blog.blog_id == max_id %}disabled{% endif %}>
+                        Next Post &rarr;
+                    </button>
+                </div>
+            </nav>
+        </div>
+
+        <div class="col-md-4">
+            <div class="position-sticky" style="top: 2rem;">
+                
+                <div class="p-4 mb-4 bg-light rounded-4 shadow-sm border-0">
+                    <h4 class="fst-italic fw-bold text-dark mb-3">About</h4>
+                    <p class="mb-0 text-secondary" style="line-height: 1.7;">
+                        Shop Smart is a premium E-commerce platform. Here you can search and browse products online. 
+                        It was built to make online shopping easier, faster, and 100% secure.
+                    </p>
+                </div>
+
+                <div class="p-4 bg-white rounded-4 shadow-sm border border-light">
+                    <h4 class="fst-italic fw-bold text-dark mb-3">Follow Us</h4>
+                    <ul class="list-unstyled mb-0 social-links">
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Instagram</a></li>
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    {% if no_id %}
+        alert("This blog post does not exist! Returning to the previous page.");
+        window.history.back();
+    {% endif %}
+
+    $('.previous').click(function () {
+        var id_str = this.id.toString();
+        id_str = id_str.slice(2);
+        var id = parseInt(id_str, 10) - 1;
+        document.location = '/blog/blogpost/' + id;
+    });
+
+    $('.next').click(function () {
+        var id_str = this.id.toString();
+        id_str = id_str.slice(2);
+        var id = parseInt(id_str, 10) + 1;
+        document.location = '/blog/blogpost/' + id;
+    });
+    if (localStorage.getItem('cart') == null) {
+        var cart = {};
+    } else {
+        cart = JSON.parse(localStorage.getItem('cart'));
+        totalItems = 0;
+        for (let value of Object.values(cart)) {
+            totalItems = totalItems + value[0];
+        }
+        document.getElementById('cart').innerHTML = totalItems;
+    }
+</script>
+{% endblock %}

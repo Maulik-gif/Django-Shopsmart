@@ -1,0 +1,54 @@
+{% extends 'shop/master.html' %}
+{% block body %}
+<div class="container mt-5 text-center">
+    <div class="card p-5 shadow-sm mx-auto" style="max-width: 600px;">
+        <h2 class="mb-4 text-info">Confirm Details & Pay</h2>
+        <p class="lead">Customer Name: <strong>{{ user_data.name }}</strong></p>
+        <p>Email Registered: <code>{{ user_data.email }}</code></p>
+        <h3 class="my-4">Total Amount: <span class="text-success">Rs. {{ user_data.amount }}</span></h3>
+
+        <button id="rzp-button" class="btn btn-success btn-lg w-100 py-3 shadow-sm">Pay Securely Now</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.getElementById('rzp-button').onclick = function (e) {
+        e.preventDefault();
+
+        var options = {
+            "key": "{{ key_id }}",
+            "amount": "{{ amount_in_paise }}",
+            "currency": "INR",
+            "name": "Shop Smart",
+            "description": "Order Purchase Checkout",
+            "order_id": "{{ razorpay_order_id }}",
+            "callback_url": "http://127.0.0.1:8000/shop/payment-callback/",
+            "redirect": true,
+
+            "notes": {
+                "notes_name": "{{ user_data.name }}",
+                "notes_email": "{{ user_data.email }}",
+                "notes_address": "{{ user_data.address }}",
+                "notes_city": "{{ user_data.city }}",
+                "notes_state": "{{ user_data.state }}",
+                "notes_zip": "{{ user_data.zip }}",
+                "notes_phone": "{{ user_data.phone }}",
+                "notes_item_json": '{{ user_data.item_json|safe }}',
+                "notes_amount": "{{ user_data.amount }}"
+            },
+            "prefill": {
+                "name": "{{ user_data.name }}",
+                "email": "{{ user_data.email }}",
+                "contact": "{{ user_data.phone }}"
+            },
+            "theme": { "color": "#0dcaf0" }
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    };
+</script>
+{% endblock %}

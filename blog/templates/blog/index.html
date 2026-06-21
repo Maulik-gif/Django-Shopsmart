@@ -1,0 +1,79 @@
+{% extends 'blog/master.html' %}
+
+{% block css %}
+/* --- Upgraded Blog CSS --- */
+.blog-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none !important;
+    border-radius: 20px;
+    background-color: #ffffff;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+}
+
+.blog-img {
+    height: 270px;
+    width: 300px;
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #0dcaf0, #198754);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5 mb-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bolder display-6"><span class="text-gradient">Shop Smart</span> Stories</h2>
+        <p class="text-muted">Stay updated with our latest news, guides, and updates.</p>
+    </div>
+
+    <div class="row gx-4 gy-4">
+        {% for blog in blogs %}
+        <div class="col-lg-6">
+            <div class="card blog-card shadow-sm h-100 flex-row overflow-hidden position-relative">
+                
+                <div class="col-7 p-4 d-flex flex-column justify-content-center">
+                    <strong class="d-inline-block mb-2 text-success fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">
+                        {{ blog.title }}
+                    </strong>
+                    <h4 class="mb-2 fw-bold text-dark" style="line-height: 1.3;">{{ blog.heading_1 }}</h4>
+                    <div class="mb-3 text-muted small">{{ blog.pub_date }}</div>
+                    
+                    <p class="card-text mb-auto text-secondary">{{ blog.heading_1_content|slice:":65" }}...</p>
+                    
+                    <a href="blogpost/{{blog.blog_id}}" class="stretched-link text-info fw-bold text-decoration-none mt-3">
+                        Read More &rarr;
+                    </a>
+                </div>
+                
+                <div class="col-5 d-none d-sm-block p-0">
+                    <img src="{{ blog.image.url }}" class="blog-img" alt="{{ blog.title }}">
+                </div>
+                
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    if (localStorage.getItem('cart') == null) {
+        var cart = {};
+    } else {
+        cart = JSON.parse(localStorage.getItem('cart'));
+        totalItems = 0;
+        for (let value of Object.values(cart)) {
+            totalItems = totalItems + value[0];
+        }
+        document.getElementById('cart').innerHTML = totalItems;
+    }
+</script>
+{% endblock %}

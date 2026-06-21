@@ -1,0 +1,56 @@
+{% extends 'shop/master.html' %}
+{% block body %}
+
+<div class="container mt-5 mb-5">
+    <div class="row shadow bg-body" style="border-radius: 25px;">
+        <div class="col lg-6 p-5">
+            <form action="contact" method="post"> {% csrf_token %}
+                <div class="mb-3" style="padding-left:38%;">
+                    <h2>Contact Form</h2>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name here">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Your email here">
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control" id="phone" name="phone"
+                           placeholder="Enter Your Phone number">
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="5"
+                              placeholder="Enter Your Message here"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col lg-6 border-start">
+            <img style="width:100%; border-radius:25px;" src="/static/shop/2.jpg" alt="">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    if (localStorage.getItem('cart') == null) {
+        var cart = {};
+    } else {
+        cart = JSON.parse(localStorage.getItem('cart'));
+        totalItems = 0;
+        for (let value of Object.values(cart)) {
+            totalItems = totalItems + value[0];
+        }
+        document.getElementById('cart').innerHTML = totalItems;
+    }
+    {% if thank %}
+        alert('Your contact has been saved. Thank you for using our website.');
+        document.location = "contact";
+    {% endif %}
+</script>
+{% endblock %}

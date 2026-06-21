@@ -1,0 +1,99 @@
+{% extends 'shop/master.html' %}
+
+{% block css %}
+.b-example-divider {
+    height: 4rem;
+    background-color: transparent;
+    background-image: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.05), rgba(0,0,0,0));
+    border: none;
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #0dcaf0, #198754);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.feature-card {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1.5rem 3rem rgba(0,0,0,.1) !important;
+}
+
+.hero-img-container {
+    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
+{% endblock %}
+
+{% block body %}
+<main>
+    <div class="px-4 pt-5 mt-5 text-center">
+        <h1 class="display-4 fw-bolder mb-3"><span class="text-gradient">Shop Smart.</span> Live Better.</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead text-muted mb-5" style="line-height: 1.8;">
+                Discover a world of products right at your fingertips. 
+                From the latest electronics to everyday essentials, 
+                find exactly what you need with our lightning-fast search and enjoy a secure, seamless checkout experience.
+            </p>
+        </div>
+        <div class="overflow-hidden hero-img-container" style="max-height: 400px;">
+            <div class="container px-5">
+                <img src="/static/shop/img.png" class="img-fluid border-0 shadow-lg mb-4" alt="Shop Smart Interface"
+                     width="750" loading="lazy" style="border-radius: 20px;">
+            </div>
+        </div>
+    </div>
+    
+    <div class="b-example-divider"></div>
+    
+    <div class="container my-5">
+        <div class="row ps-5 align-items-center border-0 shadow feature-card bg-white mx-2 mx-md-0" style="border-radius: 25px;">
+            <div class="col-lg-7 ">
+                <h1 class="display-5 fw-bold lh-1 text-dark mb-4">Your One-Stop Destination for Everything.</h1>
+                <p class="lead text-secondary" style="line-height: 1.8;">
+                    Why complicate shopping? Shop Smart brings you a carefully curated selection of top-quality items across all categories. 
+                    Experience effortless browsing, neatly organized collections, and 100% safe payments every single time you shop.
+                </p>
+            </div>
+            <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden text-center text-lg-end" style="border-radius: 25px;">
+                <img src="/static/shop/img_4.png" class="img-fluid" alt="Features" style="max-height: 450px; object-fit: cover;">
+            </div>
+        </div>
+    </div>
+    
+    <div class="b-example-divider"></div>
+    
+    <div class="text-secondary px-4 py-5 text-center shadow-lg" style="background-color: #1a1e21;">
+        <div class="py-5">
+            <h1 class="display-5 fw-bold text-white mb-4">Search Less. <span class="text-success">Find More.</span></h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="fs-5 mb-4 text-light opacity-75" style="line-height: 1.8;">
+                    Looking for something specific? Our intelligent search engine finds exactly what you're looking for in seconds. 
+                    Browse our interactive catalogs, easily add items to your cart, and check out securely in just a few clicks. 
+                    Your next great purchase is waiting!
+                </p>
+                <a href="/" class="btn btn-success btn-lg px-5 rounded-pill fw-bold shadow-sm mt-3">Start Shopping</a>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+{% block js %}
+<script>
+    if (localStorage.getItem('cart') == null) {
+        var cart = {};
+    } else {
+        cart = JSON.parse(localStorage.getItem('cart'));
+        totalItems = 0;
+        for (let value of Object.values(cart)) {
+            totalItems = totalItems + value[0];
+        }
+        document.getElementById('cart').innerHTML = totalItems;
+    }
+</script>
+{% endblock %}

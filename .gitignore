@@ -1,0 +1,11 @@
+# Environments
+.env
+venv/
+env/
+
+# Python caching
+__pycache__/
+*.pyc
+
+# Database
+db.sqlite3
